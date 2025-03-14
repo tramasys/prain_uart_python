@@ -1,4 +1,4 @@
-# prain_uart
+# prain_uart_python
 
 A python library providing an encoder and decoder for our 64-bit UART protocol used in the PREN project.
 
