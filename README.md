@@ -20,6 +20,13 @@ pip install .
 pip install mypy
 ```
 
+2. **Use from prain (install on local machine)**
+```bash
+cd prain_uart_python
+pip install -e .
+pip show prain_uart # check if installed on machine
+```
+
 ## Usage
 The library provides encode_* functions to create frames and a Decoder class to parse them. Below are examples:
 
