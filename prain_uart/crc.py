@@ -1,20 +1,11 @@
-def calculate_crc8_atm(data: int, bits: int) -> int:
+def calculate_crc8_atm(data: int, bit_length: int) -> int:
     """Calculate CRC-8-ATM (polynomial 0x07) over the given number of bits."""
-    crc = 0x00
-    poly = 0x07
-
-    mask = (1 << bits) - 1
-    data &= mask
-
-    for i in range(bits - 1, -1, -1):
-        bit = (data >> i) & 1
-        # XOR the MSB of crc with the input bit
-        crc ^= (bit << 7)
-        # Shift left and XOR with polynomial if MSB was 1
-        for _ in range(8):
-            msb = crc & 0x80  # Check MSB
-            crc = (crc << 1) & 0xFF  # Shift left, mask to 8 bits
-            if msb:
-                crc ^= poly
+    crc = 0
+    for i in range(bit_length):
+        # Process bit-by-bit (MSB first)
+        bit = ((data >> (bit_length - 1 - i)) & 1) ^ ((crc >> 7) & 1)
+        crc = ((crc << 1) & 0xFF)
+        if bit:
+            crc ^= 0x07 # CRC8-ATM polynomial: x^8 + x^2 + x + 1 (0x07)
 
     return crc
