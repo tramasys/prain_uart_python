@@ -24,11 +24,15 @@ class Command(Enum):
     ERROR = 0x7
     POLL = 0x8
     RESPONSE = 0x9
-    CRANE = 0xA
+    CRANE_UP = 0xA
+    CRANE_DOWN = 0xB
 
 class InfoFlag(Enum):
     BATTERY = 0x0
     TEMPERATURE = 0x1
+    LOST_LINE = 0x2
+    NODE_DETECTED = 0x3
+    BARRIER_DETECTED = 0x4
 
 class CraneFlag(Enum):
     UP = 0x0
@@ -38,9 +42,12 @@ class PollId(Enum):
     DEGREE = 0x0
     DISTANCE = 0x1
     LINE_SENSOR = 0x2
+    ULTRASONIC = 0x3
 
 class ErrorCode(Enum):
     INVALID_CRC = 0x0
+    INVALID_CMD = 0x1
+    INTERNAL = 0x2
 
 AddrField = Literal[0, 1, 2, 3]  # 2 bits
 CmdField = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]  # 4 bits
