@@ -31,15 +31,12 @@ class ResponseParams(NamedTuple):
     poll_id: int
     data: int  # uint16_t
 
-class CraneParams(NamedTuple):
-    flag: int
-
 class EmptyParams(NamedTuple):
     pass
 
 Params = Union[
     MoveParams, ReverseParams, TurnParams, InfoParams, EmptyParams,
-    ErrorParams, PingParams, PongParams, PollParams, ResponseParams, CraneParams
+    ErrorParams, PingParams, PongParams, PollParams, ResponseParams
 ]
 
 class Decoder:
@@ -94,7 +91,9 @@ class Decoder:
                 return PollParams(poll_id=param & 0xFF)
             case Command.RESPONSE:
                 return ResponseParams(poll_id=param & 0xFF, data=(param >> 8) & 0xFFFF)
-            case Command.CRANE:
-                return CraneParams(flag=param & 0xFF)
+            case Command.GRIP:
+                return EmptyParams()
+            case Command.RELEASE:
+                return EmptyParams()
             case _:
                 raise ValueError(f"Unknown command: {self.command}")

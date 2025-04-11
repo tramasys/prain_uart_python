@@ -24,8 +24,8 @@ class Command(Enum):
     ERROR = 0x7
     POLL = 0x8
     RESPONSE = 0x9
-    CRANE_UP = 0xA
-    CRANE_DOWN = 0xB
+    GRIP = 0xA
+    RELEASE = 0xB
 
 class InfoFlag(Enum):
     BATTERY = 0x0
@@ -33,10 +33,6 @@ class InfoFlag(Enum):
     LOST_LINE = 0x2
     NODE_DETECTED = 0x3
     BARRIER_DETECTED = 0x4
-
-class CraneFlag(Enum):
-    UP = 0x0
-    DOWN = 0x1
 
 class PollId(Enum):
     DEGREE = 0x0

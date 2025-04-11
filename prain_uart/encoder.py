@@ -1,9 +1,9 @@
 from typing import overload
-from .protocol import PAYLOAD_SIZE_BITS, Frame, Address, Command, InfoFlag, CraneFlag, PollId, ErrorCode
-from .decoder import MoveParams, ReverseParams, TurnParams, InfoParams, ErrorParams, PingParams, PongParams, PollParams, ResponseParams, CraneParams, EmptyParams
+from .protocol import PAYLOAD_SIZE_BITS, Frame, Address, Command, InfoFlag, PollId, ErrorCode
+from .decoder import MoveParams, ReverseParams, TurnParams, InfoParams, ErrorParams, PingParams, PongParams, PollParams, ResponseParams, EmptyParams
 from .crc import calculate_crc8_atm
 
-def encode(addr: Address, cmd: Command, params: MoveParams | ReverseParams | TurnParams | InfoParams | EmptyParams | ErrorParams | PingParams | PongParams | PollParams | ResponseParams | CraneParams) -> Frame:
+def encode(addr: Address, cmd: Command, params: MoveParams | ReverseParams | TurnParams | InfoParams | EmptyParams | ErrorParams | PingParams | PongParams | PollParams | ResponseParams) -> Frame:
     f = Frame()
     f.set_addr(addr.value)
     f.set_cmd(cmd.value)
@@ -28,8 +28,6 @@ def encode(addr: Address, cmd: Command, params: MoveParams | ReverseParams | Tur
         f.set_parameter(params.id)
     elif isinstance(params, PollParams):
         f.set_parameter(params.poll_id)
-    elif isinstance(params, CraneParams):
-        f.set_parameter(params.flag)
 
     f.set_crc(calculate_crc8_atm(f.payload, PAYLOAD_SIZE_BITS))
     return f
@@ -63,9 +61,10 @@ def encode_response(addr: Address, poll_id: int, data: int) -> Frame: ...
 @overload
 def encode_response(addr: Address, id: PollId, data: int) -> Frame: ...
 @overload
-def encode_crane(addr: Address, flag: int) -> Frame: ...
+def encode_grip(addr: Address) -> Frame: ...
 @overload
-def encode_crane(addr: Address, flag: CraneFlag) -> Frame: ...
+def encode_release(addr: Address) -> Frame: ...
+
 
 def encode_move(addr: Address, distance: int) -> Frame:
     return encode(addr, Command.MOVE, MoveParams(distance))
@@ -101,6 +100,8 @@ def encode_response(addr: Address, poll_id: int | PollId, data: int) -> Frame:
     pid = poll_id if isinstance(poll_id, int) else poll_id.value
     return encode(addr, Command.RESPONSE, ResponseParams(pid, data))
 
-def encode_crane(addr: Address, flag: int | CraneFlag) -> Frame:
-    f = flag if isinstance(flag, int) else flag.value
-    return encode(addr, Command.CRANE, CraneParams(f))
+def encode_grip(addr: Address) -> Frame:
+    return encode(addr, Command.GRIP, EmptyParams())
+
+def encode_release(addr: Address) -> Frame:
+    return encode(addr, Command.RELEASE, EmptyParams())

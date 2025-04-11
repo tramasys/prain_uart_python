@@ -5,7 +5,7 @@ A python library providing an encoder and decoder for our 64-bit UART protocol u
 ## Features
 - **Typed API**: Uses Python's `typing` module for strong type hints (e.g., `Literal`, `Union`, `NamedTuple`).
 - **Frame Structure**: 2-bit address, 4-bit command, 50-bit parameters, 8-bit CRC (total 64 bits).
-- **Commands**: Supports `MOVE`, `REVERSE`, `TURN`, `STOP`, `INFO`, `PING`, `PONG`, `ERROR`, `POLL`, `RESPONSE`, and `CRANE`.
+- **Commands**: Supports `MOVE`, `REVERSE`, `TURN`, `STOP`, `INFO`, `PING`, `PONG`, `ERROR`, `POLL`, `RESPONSE`, `GRIP` and `RELEASE`.
 - **CRC-8-ATM**: Implements CRC-8 checksum calculation for data integrity.
 - **Tested**: Comprehensive unit tests ensure compatibility with the C++ version.
 

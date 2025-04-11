@@ -104,16 +104,23 @@ class TestPrainUart(unittest.TestCase):
         self.assertEqual(params.poll_id, PollId.DISTANCE.value)
         self.assertEqual(params.data, 420)
 
-    def test_crane_round_trip(self):
-        f = encode_crane(Address.RASPBERRY_HAT, CraneFlag.UP)
+    def test_grip_round_trip(self):
+        f = encode_grip(Address.GRIP_CTRL)
         dec = Decoder(f.raw)
-        self.assertEqual(dec.address, Address.RASPBERRY_HAT)
-        self.assertEqual(dec.command, Command.CRANE)
+        self.assertEqual(dec.address, Address.GRIP_CTRL)
+        self.assertEqual(dec.command, Command.GRIP)
         self.assertTrue(dec.verify_crc())
-        self.assertEqual(dec.raw_parameters, CraneFlag.UP.value)
         params = dec.get_params()
-        self.assertIsInstance(params, CraneParams)
-        self.assertEqual(params.flag, CraneFlag.UP.value)
+        self.assertIsInstance(params, EmptyParams)
+
+    def test_release_round_trip(self):
+        f = encode_release(Address.GRIP_CTRL)
+        dec = Decoder(f.raw)
+        self.assertEqual(dec.address, Address.GRIP_CTRL)
+        self.assertEqual(dec.command, Command.RELEASE)
+        self.assertTrue(dec.verify_crc())
+        params = dec.get_params()
+        self.assertIsInstance(params, EmptyParams)
 
     def test_valid_crc(self):
         f = encode_ping(Address.MOTION_CTRL, 42)
