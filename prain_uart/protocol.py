@@ -34,6 +34,7 @@ class InfoFlag(Enum):
     NODE_DETECTED = 0x3
     BARRIER_DETECTED = 0x4
     MOTION_DONE = 0x5
+    ACK = 0x6
 
 class PollId(Enum):
     DEGREE = 0x0
